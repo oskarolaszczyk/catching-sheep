@@ -1,8 +1,9 @@
 from models.Sheep import *
 from models.Wolf import *
 import json
+import csv
 
-rounds = 5
+rounds = 50
 sheeps_count = 15
 init_pos_limit = 10.0
 sheep_move_dist = 0.5
@@ -33,6 +34,7 @@ def simulation(wolf, sheeps, rounds):
         # json export
         json_data = create_json(sheeps, wolf, i+1)
         write_json(i+1, json_data)
+        write_csv(i+1, get_alive_count(sheeps))
         print("\nround_no: " + str(i+1) + "\n" + "wolf position" + str(wolf.position) + "\ndied:" + str(get_dies_count(sheeps)))
 
 def find_nearest_sheep(wolf, sheeps):
@@ -51,6 +53,14 @@ def get_dies_count(sheeps):
     count = 0
     for sheep in sheeps:
         if not sheep.alive:
+            count += 1
+
+    return count
+
+def get_alive_count(sheeps):
+    count = 0
+    for sheep in sheeps:
+        if sheep.alive:
             count += 1
 
     return count
@@ -85,6 +95,24 @@ def write_json(round_no, data, filename='data/pos.json'):
     else:
         with open(filename,'a') as f:
             f.write(json.dumps(data, indent=5))
+
+
+def write_csv(round_no, alive_count, filename='data/alive.csv'):
+    if round_no == 1:
+        with open(filename, mode='w') as csv_file:
+            fieldnames = ['round_no', 'alive']
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+            writer.writeheader()
+            writer.writerow({'round_no': round_no, 'alive': alive_count})
+    else:
+        with open(filename, mode='a') as csv_file:
+            fieldnames = ['round_no', 'alive']
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+            writer.writerow({'round_no': round_no, 'alive': alive_count})
+
+
 
 if __name__ == "__main__":
     main()
