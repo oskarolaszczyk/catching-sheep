@@ -1,15 +1,17 @@
 import random
+from colorama import Fore, Style
 
 from .Animal import Animal
 
 
 class Sheep(Animal):
-    def __init__(self, move_dist, init_pos_limit):
+    def __init__(self, move_dist, init_pos_limit, id_number):
         super().__init__(move_dist)
         x = random.uniform(-init_pos_limit, init_pos_limit)
         y = random.uniform(-init_pos_limit, init_pos_limit)
         self.position = [x, y]
         self.alive = True
+        self.id_number = id_number
 
     def move(self):
         directions = ["up", "down", "left", "right"]
@@ -27,3 +29,5 @@ class Sheep(Animal):
 
     def die(self):
         self.alive = False
+        print(Fore.RED + "Shep died: " + str(self.id_number))
+        print(Style.RESET_ALL)

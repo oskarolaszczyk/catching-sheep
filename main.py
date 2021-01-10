@@ -1,7 +1,7 @@
 from models.Sheep import *
 from models.Wolf import *
 
-rounds = 300
+rounds = 50
 sheeps_count = 15
 init_pos_limit = 10.0
 sheep_move_dist = 0.5
@@ -14,8 +14,9 @@ def main():
     sheeps = []
 
     for i in range(sheeps_count):
-        sheep = Sheep(sheep_move_dist, init_pos_limit)
+        sheep = Sheep(sheep_move_dist, init_pos_limit, i+1)
         sheeps.append(sheep)
+
     simulation(wolf, sheeps, rounds)
     print()
 
@@ -32,7 +33,7 @@ def simulation(wolf, sheeps, rounds):
 
 
 def find_nearest_sheep(wolf, sheeps):
-    min_distance = distance.euclidean(wolf.position, sheeps[0].position)
+    min_distance = init_pos_limit + 1000
     nearest_sheep = sheeps[0]
     for sheep in sheeps:
         if sheep.alive:
@@ -48,6 +49,7 @@ def get_dies_count(sheeps):
     for sheep in sheeps:
         if not sheep.alive:
             count += 1
+
     return count
 
 
