@@ -1,31 +1,32 @@
+import os
+import sys
+
 from models.Sheep import *
 from models.Wolf import *
+from config import args_parser
+from data import config_file
+from colorama import Fore, Style
 import json
 import csv
 
-rounds = 50
-sheeps_count = 15
-init_pos_limit = 10.0
-sheep_move_dist = 0.5
-wolf_move_dist = 1.0
-
 
 def main():
+
     # init sheeps and wolf
-    wolf = Wolf(wolf_move_dist)
+    wolf = Wolf(config_file.wolf_move_dist)
     sheeps = []
 
-    for i in range(sheeps_count):
-        sheep = Sheep(sheep_move_dist, init_pos_limit, i+1)
+    for i in range(config_file.sheeps_no):
+        sheep = Sheep(config_file.sheep_move_dist, config_file.init_pos_limit, i+1)
         sheeps.append(sheep)
 
-    simulation(wolf, sheeps, rounds)
-    print()
+    args_parser()
+    simulation(wolf, sheeps, config_file.rounds_no)
 
 
 def simulation(wolf, sheeps, rounds):
     for i in range(rounds):
-        if get_dies_count(sheeps) == sheeps_count:
+        if get_dies_count(sheeps) == config_file.sheeps_no:
             break
         for sheep in sheeps:
             sheep.move()
@@ -35,10 +36,13 @@ def simulation(wolf, sheeps, rounds):
         json_data = create_json(sheeps, wolf, i+1)
         write_json(i+1, json_data)
         write_csv(i+1, get_alive_count(sheeps))
-        print("\nround_no: " + str(i+1) + "\n" + "wolf position" + str(wolf.position) + "\ndied:" + str(get_dies_count(sheeps)))
+        print("round_no: " + str(i+1) + "\n" + "wolf position" + str(wolf.position) + "\nalive:" + str(get_alive_count(sheeps)) + "\ndied:" + str(get_dies_count(sheeps)) + "\n")
+        if config_file.wait:
+            input(Fore.GREEN+"Press enter to continue symulation")
+            print(Style.RESET_ALL)
 
 def find_nearest_sheep(wolf, sheeps):
-    min_distance = init_pos_limit + 1000
+    min_distance = config_file.init_pos_limit + 1000
     nearest_sheep = sheeps[0]
     for sheep in sheeps:
         if sheep.alive:
@@ -115,4 +119,11 @@ def write_csv(round_no, alive_count, filename='data/alive.csv'):
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print(Style.RESET_ALL)
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
