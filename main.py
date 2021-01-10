@@ -1,7 +1,8 @@
 from models.Sheep import *
 from models.Wolf import *
+import json
 
-rounds = 50
+rounds = 5
 sheeps_count = 15
 init_pos_limit = 10.0
 sheep_move_dist = 0.5
@@ -29,8 +30,10 @@ def simulation(wolf, sheeps, rounds):
             sheep.move()
         min_distance, nearest_sheep = find_nearest_sheep(wolf, sheeps)
         wolf.try_catch_sheep(nearest_sheep, min_distance)
+        # json export
+        json_data = create_json(sheeps, wolf, i+1)
+        write_json(i+1, json_data)
         print("\nround_no: " + str(i+1) + "\n" + "wolf position" + str(wolf.position) + "\ndied:" + str(get_dies_count(sheeps)))
-
 
 def find_nearest_sheep(wolf, sheeps):
     min_distance = init_pos_limit + 1000
@@ -52,6 +55,36 @@ def get_dies_count(sheeps):
 
     return count
 
+def create_json(sheeps, wolf, round_no):
+    x = {
+        "round_no": round_no,
+        "wolf_pos": {"x": wolf.get_x(),
+                     "y": wolf.get_y()}
+    }
+    sheeps_pos = []
+    for sheep in sheeps:
+        if sheep.alive:
+            sheeps_pos.append({
+                "sheep_id": sheep.id_number,
+                "sheep_pos": {"x": sheep.get_x(),
+                              "y": sheep.get_y()}
+                })
+        else:
+            sheeps_pos.append({
+                "sheep_id": sheep.id_number,
+                "sheep_pos": None})
+    x['sheeps_pos'] = sheeps_pos
+
+    return x
+
+
+def write_json(round_no, data, filename='data/pos.json'):
+    if round_no == 1:
+        with open(filename,'w') as f:
+            f.write(json.dumps(data, indent=5))
+    else:
+        with open(filename,'a') as f:
+            f.write(json.dumps(data, indent=5))
 
 if __name__ == "__main__":
     main()
