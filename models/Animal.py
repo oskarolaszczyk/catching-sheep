@@ -5,3 +5,15 @@ class Animal:
 
     def set_position(self, position):
         self.position = position
+
+    def get_x(self):
+        return self.position[0]
+
+    def get_y(self):
+        return self.position[1]
+
+    def set_x(self, value):
+        self.position[0] = value
+
+    def set_y(self, value):
+        self.position[1] = value
