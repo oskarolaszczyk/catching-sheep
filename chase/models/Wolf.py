@@ -14,6 +14,8 @@ class Wolf(Animal):
 
             return killed_sheep_id
         else:
+            # TODO increase perfomance of this method
+            #  -> bigger wolf_move_dostance = worst perfomance of catching sheeps
             x_value = (sheep.get_x() - self.get_x()) / distance
             y_value = (sheep.get_y() - self.get_y()) / distance
             self.move(x_value, y_value)

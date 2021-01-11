@@ -1,5 +1,5 @@
 class Animal:
-    id_number = 0
+
     def __init__(self, move_dist):
         self.move_dist = move_dist
         self.position = [0.0, 0.0]

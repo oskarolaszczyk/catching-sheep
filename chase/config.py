@@ -1,10 +1,9 @@
 import argparse
-import logging
 import configparser
 import os
 import logging
-import logger
-from data import config_file
+from chase import logger
+from chase.data import config_file
 
 
 def args_parser():

@@ -1,6 +1,6 @@
 import logging
 
-from data import config_file
+from chase.data import config_file
 
 
 def init_logger(level):
