@@ -1,6 +1,8 @@
 import argparse
 import logging
 import configparser
+import os
+
 from data import config_file
 
 
@@ -22,8 +24,21 @@ def args_parser():
     args = parser.parse_args()
     # if args.conf_file is not None:
 
-    # if args.directory is not None:
-    #     directory = args.directory
+    if args.directory is not None:
+        # print(config_file.directory)
+        # print(type(config_file.directory))
+        # print(args.directory)
+        # print(type(args.directory))
+
+        config_file.directory = args.directory
+        try:
+            os.mkdir(config_file.directory)
+        except OSError:
+            print("Creation of the directory %s failed" % config_file.directory)
+
+        # print(config_file.directory)
+        # print(type(config_file.directory))
+
     # if args.log_lvl is not None:
     #     if args.log_lvl == "DEBUG":
     #         lvl = logging.DEBUG
