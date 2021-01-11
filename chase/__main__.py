@@ -1,10 +1,10 @@
 import os
 import sys
 from colorama import Fore, Style
-from . import logger
-from chase.data import config_file
-from chase.chase_simulation import ChaseSimulation
-from chase.config import args_parser
+import logger
+from data import config_file
+from chase_simulation import ChaseSimulation
+from config import args_parser
 
 def main():
     log = f"Game config:  rounds: {config_file.rounds_no}, sheeps_no: {config_file.sheeps_no}, " \

@@ -1,8 +1,8 @@
 import json
 import csv
-from chase import logger
-from .models.Sheep import *
-from .models.Wolf import *
+import logger
+from models.Sheep import *
+from models.Wolf import *
 from colorama import Fore, Style
 
 
