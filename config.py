@@ -8,7 +8,7 @@ from data import config_file
 
 def args_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--config', help="set config file", action='store', dest='conf_file', metavar='FILE')
+    parser.add_argument('-c', '--config', help="set config file", action='store', dest='config_file', metavar='FILE')
     parser.add_argument('-d', '--dir', action='store', help="choose where to save files", dest='directory',
                         metavar='DIR')
     parser.add_argument('-l', '--log', action='store', help="create log file with log LEVEL", dest='log_lvl',
@@ -22,22 +22,35 @@ def args_parser():
     parser.add_argument('-w', '--wait', action='store_true', help="wait for input after each round")
 
     args = parser.parse_args()
-    # if args.conf_file is not None:
+
+    if args.config_file is not None:
+        config = configparser.ConfigParser()
+        config.read(args.config_file)
+        init_limit = float(config.get('Terrain', 'InitPosLimit'))
+        sheep_dist = float(config.get('Movement', 'SheepMoveDist'))
+        wolf_dist = float(config.get('Movement', 'WolfMoveDist'))
+
+        if init_limit > 0:
+            config_file.init_pos_limit = init_limit
+        else:
+            raise ValueError("Not positive number")
+
+        if sheep_dist > 0:
+            config_file.sheep_move_dist = sheep_dist
+        else:
+            raise ValueError("Not positive number")
+
+        if wolf_dist > 0:
+            config_file.wolf_move_dist = wolf_dist
+        else:
+            raise ValueError("Not positive number")
 
     if args.directory is not None:
-        # print(config_file.directory)
-        # print(type(config_file.directory))
-        # print(args.directory)
-        # print(type(args.directory))
-
         config_file.directory = args.directory
         try:
             os.mkdir(config_file.directory)
         except OSError:
             print("Creation of the directory %s failed" % config_file.directory)
-
-        # print(config_file.directory)
-        # print(type(config_file.directory))
 
     # if args.log_lvl is not None:
     #     if args.log_lvl == "DEBUG":

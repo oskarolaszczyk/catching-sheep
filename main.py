@@ -20,15 +20,14 @@ def main():
         sheep = Sheep(config_file.sheep_move_dist, config_file.init_pos_limit, i+1)
         sheeps.append(sheep)
 
-    args_parser()
     simulation(wolf, sheeps, config_file.rounds_no)
 
 
 def simulation(wolf, sheeps, rounds):
     for i in range(rounds):
-        print("round_no: " + str(i + 1))
         if get_dies_count(sheeps) == config_file.sheeps_no:
             break
+        print("round_no: " + str(i + 1))
         for sheep in sheeps:
             sheep.move()
         min_distance, nearest_sheep = find_nearest_sheep(wolf, sheeps)
@@ -36,7 +35,9 @@ def simulation(wolf, sheeps, rounds):
         # json export
         json_data = create_json(sheeps, wolf, i+1)
         write_json(i+1, json_data)
+        #csv export
         write_csv(i+1, get_alive_count(sheeps))
+        #terminal info
         print("wolf position" + str(wolf.position) + "\nalive:" + str(get_alive_count(sheeps)) + "\ndied:" + str(get_dies_count(sheeps)) + "\n")
         if config_file.wait:
             input(Fore.GREEN+"Press enter to continue symulation")
@@ -124,6 +125,7 @@ def write_csv(round_no, alive_count, filename='alive.csv'):
 
 if __name__ == "__main__":
     try:
+        args_parser()
         main()
     except KeyboardInterrupt:
         print(Style.RESET_ALL)
