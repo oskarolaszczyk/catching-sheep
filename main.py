@@ -14,13 +14,13 @@ def main():
     log = f"Game config:  rounds: {config_file.rounds_no}, sheeps_no: {config_file.sheeps_no}, " \
           f"init_pos_limit: {config_file.init_pos_limit}, sheep_move_dist: {config_file.sheep_move_dist}, " \
           f"wolf_move_dist {config_file.wolf_move_dist}"
-    logger.get_logger().debug(log)
+    logger.get_logger().info(log)
 
     wolf, sheeps = init_animals()
     simulation(wolf, sheeps, config_file.rounds_no)
 
 
-# ----------OTHER FUNCTIONS-----------
+# ----------OTHER FUNCTIONS----------- #
 
 
 def init_animals():
@@ -43,19 +43,19 @@ def simulation(wolf, sheeps, rounds):
             break
         round_log = f"round_no: {i+1}"
         print(Fore.CYAN + round_log + Style.RESET_ALL)
+        # json export
+        json_data = create_json(sheeps, wolf, i)
+        write_json(i, json_data)
         for sheep in sheeps:
             sheep.move()
         min_distance, nearest_sheep = find_nearest_sheep(wolf, sheeps)
         start_wolf_position = [round(pos, 3) for pos in wolf.position]
         killed_sheep_index = wolf.try_catch_sheep(nearest_sheep, min_distance)
-        # json export
-        json_data = create_json(sheeps, wolf, i + 1)
-        write_json(i + 1, json_data)
         # csv export
         write_csv(i + 1, get_alive_count(sheeps))
 
-        rounded_wolf_position = [round(pos, 3) for pos in wolf.position]
-        other_info_log = f"wolf start position: {rounded_wolf_position}\nalive: {get_alive_count(sheeps)}\ndied: {get_dies_count(sheeps)}\nwolf end position{start_wolf_position}\n"
+        end_wolf_position = [round(pos, 3) for pos in wolf.position]
+        other_info_log = f"wolf start position: {start_wolf_position}\nalive: {get_alive_count(sheeps)}\ndied: {get_dies_count(sheeps)}\nwolf end position{end_wolf_position}\n"
         # terminal info
         if killed_sheep_index is not None:
             killed_sheep_index_log = f"sheep died: {killed_sheep_index}\n"
@@ -138,7 +138,7 @@ def create_json(sheeps, wolf, round_no):
 def write_json(round_no, data, filename='pos.json'):
     path = config_file.directory + "/" + filename
 
-    if round_no == 1:
+    if round_no == 0:
         with open(path, 'w') as f:
             f.write(json.dumps(data, indent=5))
 

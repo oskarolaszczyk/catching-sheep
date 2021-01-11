@@ -8,7 +8,8 @@ class Wolf(Animal):
     def try_catch_sheep(self, sheep, distance):
 
         if distance <= sheep.move_dist:
-            self.set_position(sheep.position)
+            self.set_x(sheep.get_x())
+            self.set_y(sheep.get_y())
             killed_sheep_id = sheep.die()
 
             return killed_sheep_id

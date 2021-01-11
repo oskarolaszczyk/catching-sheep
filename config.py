@@ -65,7 +65,6 @@ def args_parser():
         if args.log_lvl not in error_levels:
             raise ValueError("Invalid log level!")
         else:
-            print("essa")
             logger.init_logger(error_levels[args.log_lvl])
 
     if args.rounds_no is not None:
