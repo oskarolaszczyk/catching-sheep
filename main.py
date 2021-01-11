@@ -127,7 +127,6 @@ def write_csv(round_no, alive_count, filename='alive.csv'):
 if __name__ == "__main__":
     try:
         args_parser()
-        logger.init_logger()
         main()
     except KeyboardInterrupt:
         print(Style.RESET_ALL)

@@ -2,7 +2,8 @@ import argparse
 import logging
 import configparser
 import os
-
+import logging
+import logger
 from data import config_file
 
 
@@ -52,21 +53,21 @@ def args_parser():
         except OSError:
             print("Creation of the directory %s failed" % config_file.directory)
 
-    # if args.log_lvl is not None:
-    #     if args.log_lvl == "DEBUG":
-    #         lvl = logging.DEBUG
-    #     elif args.log_lvl == "INFO":
-    #         lvl = logging.INFO
-    #     elif args.log_lvl == "WARNING":
-    #         lvl = logging.WARNING
-    #     elif args.log_lvl == "ERROR":
-    #         lvl = logging.ERROR
-    #     elif args.log_lvl == "CRITICAL":
-    #         lvl = logging.CRITICAL
-    #     else:
-    #         raise ValueError("Invalid log level!")
-    #     logging.basicConfig(level=lvl, filename="chase.log")
-    #     logging.debug("debug")
+    if args.log_lvl is not None:
+        error_levels = {
+            "DEBUG": logging.DEBUG,
+            "INFO": logging.INFO,
+            "WARNING": logging.WARNING,
+            "ERROR": logging.ERROR,
+            "CRITICAL": logging.CRITICAL
+        }
+
+        if args.log_lvl not in error_levels:
+            raise ValueError("Invalid log level!")
+        else:
+            print("essa")
+            logger.init_logger(error_levels[args.log_lvl])
+
     if args.rounds_no is not None:
         if args.rounds_no < 0:
             raise ValueError("Value must be positive")
