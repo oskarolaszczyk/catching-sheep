@@ -1,13 +1,14 @@
 import os
 import sys
-
+import json
+import csv
+import logger
 from models.Sheep import *
 from models.Wolf import *
 from config import args_parser
 from data import config_file
 from colorama import Fore, Style
-import json
-import csv
+
 
 
 def main():
@@ -20,7 +21,7 @@ def main():
         sheep = Sheep(config_file.sheep_move_dist, config_file.init_pos_limit, i+1)
         sheeps.append(sheep)
 
-    simulation(wolf, sheeps, config_file.rounds_no)
+    #simulation(wolf, sheeps, config_file.rounds_no)
 
 
 def simulation(wolf, sheeps, rounds):
@@ -126,6 +127,7 @@ def write_csv(round_no, alive_count, filename='alive.csv'):
 if __name__ == "__main__":
     try:
         args_parser()
+        logger.init_logger()
         main()
     except KeyboardInterrupt:
         print(Style.RESET_ALL)
