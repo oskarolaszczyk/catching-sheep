@@ -21,7 +21,7 @@ def main():
         sheep = Sheep(config_file.sheep_move_dist, config_file.init_pos_limit, i+1)
         sheeps.append(sheep)
 
-    #simulation(wolf, sheeps, config_file.rounds_no)
+    simulation(wolf, sheeps, config_file.rounds_no)
 
 
 def simulation(wolf, sheeps, rounds):
@@ -32,13 +32,16 @@ def simulation(wolf, sheeps, rounds):
         for sheep in sheeps:
             sheep.move()
         min_distance, nearest_sheep = find_nearest_sheep(wolf, sheeps)
-        wolf.try_catch_sheep(nearest_sheep, min_distance)
+        killed_sheep_index = wolf.try_catch_sheep(nearest_sheep, min_distance)
         # json export
         json_data = create_json(sheeps, wolf, i+1)
         write_json(i+1, json_data)
         #csv export
         write_csv(i+1, get_alive_count(sheeps))
         #terminal info
+        if killed_sheep_index is not None:
+            print(Fore.RED + "sheep died: " + str(killed_sheep_index), end='')
+            print(Style.RESET_ALL)
         print("wolf position" + str(wolf.position) + "\nalive:" + str(get_alive_count(sheeps)) + "\ndied:" + str(get_dies_count(sheeps)) + "\n")
         if config_file.wait:
             input(Fore.GREEN+"Press enter to continue symulation")

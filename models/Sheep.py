@@ -29,5 +29,6 @@ class Sheep(Animal):
 
     def die(self):
         self.alive = False
-        print(Fore.RED + "sheep died: " + str(self.id_number), end='')
-        print(Style.RESET_ALL)
+
+        return self.id_number
+

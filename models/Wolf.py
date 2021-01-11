@@ -9,11 +9,15 @@ class Wolf(Animal):
 
         if distance <= sheep.move_dist:
             self.set_position(sheep.position)
-            sheep.die()
+            killed_sheep_id = sheep.die()
+
+            return killed_sheep_id
         else:
             x_value = (sheep.get_x() - self.get_x()) / distance
             y_value = (sheep.get_y() - self.get_y()) / distance
             self.move(x_value, y_value)
+
+            return None
 
     def move(self, x, y):
         self.set_y(self.get_y() + self.move_dist * y)

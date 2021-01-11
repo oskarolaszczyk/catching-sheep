@@ -79,5 +79,6 @@ def args_parser():
             raise ValueError("Value must be positive")
         config_file.sheeps_no = args.sheeps_no
 
+
     if args.wait:
         config_file.wait = True
