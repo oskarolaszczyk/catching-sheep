@@ -9,7 +9,7 @@ class Sheep(Animal):
 
         x = random.uniform(-init_pos_limit, init_pos_limit)
         y = random.uniform(-init_pos_limit, init_pos_limit)
-        self.position = [x, y]
+        self.set_position([x, y])
         self.alive = True
         self.id_number = id_number
 

@@ -59,13 +59,17 @@ class ChaseSimulation:
             round_log = f"round_no: {i + 1}"
             print(Fore.CYAN + round_log + Style.RESET_ALL)
             # json export
-            json_data = self.create_json(i + 1)
-            self.write_json(i, json_data)
+            if i == 0:
+                json_data = self.create_json(i)
+                self.write_json(i, json_data)
             for sheep in self._sheeps:
                 sheep.move()
             min_distance, nearest_sheep = self.find_nearest_sheep()
             start_wolf_position = [round(pos, 3) for pos in self._wolf.get_position()]
             killed_sheep_index = self._wolf.try_catch_sheep(nearest_sheep, min_distance)
+            # json export
+            json_data = self.create_json(i+1)
+            self.write_json(i, json_data)
             # csv export
             self.write_csv(i + 1, self.get_alive_count())
 

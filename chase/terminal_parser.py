@@ -55,19 +55,19 @@ def args_parser():
             raise ValueError("Wrong types in config.ini")
 
         if init_limit > 0:
-            parameters.init_pos_limit = init_limit
+            parameters.init_pos_limit = float(init_limit)
         else:
             logger.get_logger().error("Wrong init_limit value")
             raise ValueError("Wrong init_limit value")
 
         if sheep_dist > 0:
-            parameters.sheep_move_dist = sheep_dist
+            parameters.sheep_move_dist = float(sheep_dist)
         else:
             logger.get_logger().error("Wrong sheep_distance value")
             raise ValueError("Wrong sheep_distance value")
 
         if wolf_dist > 0:
-            parameters.wolf_move_dist = wolf_dist
+            parameters.wolf_move_dist = float(wolf_dist)
         else:
             logger.get_logger().error("Wrong wolf_distance value")
             raise ValueError("Wrong wolf_distance value")
