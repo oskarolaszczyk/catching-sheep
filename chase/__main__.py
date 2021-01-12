@@ -1,20 +1,19 @@
 import os
 import sys
-from colorama import Fore, Style
-import logger
-from data import config_file
-from chase_simulation import ChaseSimulation
-from config import args_parser
+from colorama import Style
+from . import logger, parameters
+from .chase_simulation import ChaseSimulation
+from .terminal_parser import args_parser
 
 def main():
-    log = f"Game config:  rounds: {config_file.rounds_no}, sheeps_no: {config_file.sheeps_no}, " \
-          f"init_pos_limit: {config_file.init_pos_limit}, sheep_move_dist: {config_file.sheep_move_dist}, " \
-          f"wolf_move_dist {config_file.wolf_move_dist}"
+    log = f"Game config:  rounds: {parameters.rounds_no}, sheeps_no: {parameters.sheeps_no}, " \
+          f"init_pos_limit: {parameters.init_pos_limit}, sheep_move_dist: {parameters.sheep_move_dist}, " \
+          f"wolf_move_dist {parameters.wolf_move_dist}"
     logger.get_logger().info(log)
 
-    chase_simulation = ChaseSimulation(config_file.rounds_no, config_file.sheeps_no, config_file.init_pos_limit,
-                                     config_file.sheep_move_dist, config_file.wolf_move_dist, config_file.wait,
-                                     config_file.directory)
+    chase_simulation = ChaseSimulation(parameters.rounds_no, parameters.sheeps_no, parameters.init_pos_limit,
+                                       parameters.sheep_move_dist, parameters.wolf_move_dist, parameters.wait,
+                                       parameters.directory)
 
     chase_simulation.simulate()
 

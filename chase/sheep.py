@@ -1,12 +1,12 @@
 import random
-from colorama import Fore, Style
 
-from .Animal import Animal
+from .animal import Animal
 
 
 class Sheep(Animal):
     def __init__(self, move_dist, init_pos_limit, id_number):
         super().__init__(move_dist)
+
         x = random.uniform(-init_pos_limit, init_pos_limit)
         y = random.uniform(-init_pos_limit, init_pos_limit)
         self.position = [x, y]
